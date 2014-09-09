@@ -43,7 +43,9 @@ benchmark(unlist(lapply(DF1$Pr, foo)), replications = 10000)
 # 1 unlist(lapply(DF1$Pr, foo))        10000    8.28        1      8.27        0         NA        NA
 
 
-#~~ one alternative is to use the ddplyr package
+#~~ one alternative is to use the ddply package
+
+library(ddply)
 
 DF2 <- data.frame(Pr = runif(100, min = 0, max = 1),
                   Index = 1:100)
@@ -68,6 +70,8 @@ benchmark(unlist(lapply(DF1$Pr, foo)),
 vapply(DF1$Pr, foo, 1)
 
 # data.table
+
+library(data.table)
 
 DT <- data.table(Pr    = runif(100, min=0, max=1),
                  Index = 1:100)

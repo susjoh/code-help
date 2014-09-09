@@ -8,6 +8,14 @@ DF1 <- data.frame(Pr = runif(100, min = 0, max = 1),
 
 head(DF1)
 
+#            Pr Index
+# 1 0.859005752     1
+# 2 0.855189580     2
+# 3 0.505795720     3
+# 4 0.538751551     4
+# 5 0.007354454     5
+# 6 0.179826223     6
+
 #~~ The function foo samples a vector of length 2, with probabilities of 1-x and x.
 
 foo <- function(x) sample.int(2, size = 1, prob = c(1 - x, x))
@@ -17,15 +25,22 @@ foo <- function(x) sample.int(2, size = 1, prob = c(1 - x, x))
 DF1$Sample <- unlist(lapply(DF1$Pr, foo))
 head(DF1)
 
+#            Pr Index Sample
+# 1 0.859005752     1      2
+# 2 0.855189580     2      2
+# 3 0.505795720     3      1
+# 4 0.538751551     4      2
+# 5 0.007354454     5      1
+# 6 0.179826223     6      1
+
 #~~ However, this is slow when run several thousand times:
 
 library(rbenchmark)
 
 benchmark(unlist(lapply(DF1$Pr, foo)), replications = 10000)
 
-#                               test replications elapsed relative user.self sys.self user.child sys.child
-# 2 summarise(DF2gp, samp = foo(Pr))        10000   12.77     1.55     12.76        0         NA        NA
-# 1      unlist(lapply(DF1$Pr, foo))        10000    8.24     1.00      8.22        0         NA        NA
+#                          test replications elapsed relative user.self sys.self user.child sys.child
+# 1 unlist(lapply(DF1$Pr, foo))        10000    8.28        1      8.27        0         NA        NA
 
 
 #~~ one alternative is to use the ddplyr package
@@ -41,6 +56,10 @@ DF2$Sample <- summarise(DF2gp, samp = foo(Pr))
 
 benchmark(unlist(lapply(DF1$Pr, foo)),
           summarise(DF2gp, samp = foo(Pr)), replications = 10000)
+
+#                               test replications elapsed relative user.self sys.self user.child sys.child
+# 2 summarise(DF2gp, samp = foo(Pr))        10000   12.77     1.55     12.76        0         NA        NA
+# 1      unlist(lapply(DF1$Pr, foo))        10000    8.24     1.00      8.22        0         NA        NA
 
 #~~ other possibilities:
 

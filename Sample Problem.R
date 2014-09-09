@@ -78,6 +78,7 @@ DT <- data.table(Pr    = runif(100, min=0, max=1),
 
 setkey(DT, Index)
 
+DT[,list(samp=foo(Pr)), by=key(DT)]
 
 #~~ All are slow...
 

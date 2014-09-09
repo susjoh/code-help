@@ -45,7 +45,7 @@ benchmark(unlist(lapply(DF1$Pr, foo)), replications = 10000)
 
 #~~ one alternative is to use the ddply package
 
-library(ddply)
+library(dplyr)
 
 DF2 <- data.frame(Pr = runif(100, min = 0, max = 1),
                   Index = 1:100)

@@ -1,0 +1,5 @@
+model1 <- asreml(fixed     = cbind(Female.RR, Male.RR) ~ trait, 
+                 random    = ~ corgh(trait, init = c(0.1, 1, 1)):giv(ID) + ide(ID),
+                 rcov      = ~ units:idh(trait, init = NA),
+                 data      = recsumm,
+                 ginverse  = list(ID = grminv))

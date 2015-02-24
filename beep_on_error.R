@@ -5,7 +5,8 @@ options(error = function(){
   beepr::beep()
   Sys.sleep(1)
   }
-  )```
+  )
+```
 
 
 ```{r}
